@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração - Global Truck</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    .admin-container {
+      max-width: 900px;
+      margin: auto;
+      padding: 25px 15px;
+    }
+
+    .painel {
+      background: #111820;
+      border: 1px solid #26313d;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .painel h2 {
+      margin-bottom: 20px;
+      color: #00aaff;
+    }
+
+    .campo {
+      margin-bottom: 15px;
+    }
+
+    .campo label {
+      display: block;
+      color: #9aa7b5;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .campo input,
+    .campo select,
+    .campo textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #26313d;
+      border-radius: 8px;
+      background: #0b0f14;
+      color: white;
+      outline: none;
+    }
+
+    .campo textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .btn-excluir {
+      background: #b3261e;
+    }
+
+    .btn-sair {
+      background: #444d57;
+    }
+
+    .login {
+      max-width: 400px;
+      margin: 60px auto;
+      padding: 20px;
+      background: #111820;
+      border: 1px solid #26313d;
+      border-radius: 12px;
+    }
+
+    .login h2 {
+      margin-bottom: 20px;
+      color: #00aaff;
+    }
+
+    .mensagem {
+      margin-top: 12px;
+      color: #ff7777;
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h1>GLOBAL TRUCK</h1>
+    <p>Administração de Cargas</p>
+  </div>
+
+  <a href="/" class="admin-btn">Voltar</a>
+</header>
+
+<main class="admin-container">
+
+  <div id="loginArea" class="login">
+
+    <h2>Área Administrativa</h2>
+
+    <div class="campo">
+      <label>Senha</label>
+      <input
+        type="password"
+        id="senha"
+        placeholder="Digite sua senha"
+      >
+    </div>
+
+    <button onclick="entrar()">Entrar</button>
+
+    <div id="loginMensagem" class="mensagem"></div>
+
+  </div>
+
+  <div id="adminArea" style="display:none;">
+
+    <div class="painel">
+
+      <h2>Nova Carga</h2>
+
+      <div class="grid">
+
+        <div class="campo">
+          <label>Carga</label>
+          <input
+            type="text"
+            id="carga"
+            placeholder="Ex: Soja"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Valor</label>
+          <input
+            type="number"
+            id="valor"
+            step="0.01"
+            placeholder="Ex: 5000"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Local para pegar</label>
+          <input
+            type="text"
+            id="local_coleta"
+            placeholder="Ex: Porto Alegre"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Local de entrega</label>
+          <input
+            type="text"
+            id="local_entrega"
+            placeholder="Ex: São Paulo"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Placa do caminhão</label>
+          <input
+            type="text"
+            id="placa"
+            placeholder="Ex: ABC1D23"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Nome do motorista</label>
+          <input
+            type="text"
+            id="motorista"
+            placeholder="Nome do motorista"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Data da carga</label>
+          <input
+            type="date"
+            id="data_carga"
+          >
+        </div>
+
+        <div class="campo">
+          <label>Status</label>
+
+          <select id="status">
+            <option value="Disponível">Disponível</option>
+            <option value="Em andamento">Em andamento</option>
+            <option value="Entregue">Entregue</option>
+          </select>
+
+        </div>
+
+      </div>
+
+      <div class="campo">
+        <label>Observação</label>
+
+        <textarea
+          id="observacao"
+          placeholder="Alguma informação sobre a carga..."
+        ></textarea>
+      </div>
+
+      <div class="acoes">
+
+        <button onclick="criarCarga()">
+          Criar carga
+        </button>
+
+        <button
+          onclick="sair()"
+          class="btn-sair"
+        >
+          Sair
+        </button>
+
+      </div>
+
+      <div id="mensagem" class="mensagem"></div>
+
+    </div>
+
+    <div class="painel">
+
+      <h2>Cargas cadastradas</h2>
+
+      <div id="listaAdmin">
+        Carregando...
+      </div>
+
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+
+let token = localStorage.getItem("adminToken");
+
+if (token) {
+  mostrarAdmin();
+}
+
+async function entrar() {
+
+  const senha = document.getElementById("senha").value;
+  const mensagem = document.getElementById("loginMensagem");
+
+  mensagem.textContent = "";
+
+  try {
+
+    const resposta = await fetch("/api/login", {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        senha
+      })
+
+    });
+
+    const dados = await resposta.json();
+
+    if (!resposta.ok) {
+
+      mensagem.textContent =
+        dados.erro || "Senha incorreta.";
+
+      return;
+    }
+
+    localStorage.setItem(
+      "adminToken",
+      dados.token
+    );
+
+    token = dados.token;
+
+    mostrarAdmin();
+
+  } catch (erro) {
+
+    mensagem.textContent =
+      "Erro ao conectar ao servidor.";
+
+  }
+}
+
+function mostrarAdmin() {
+
+  document.getElementById("loginArea").style.display =
+    "none";
+
+  document.getElementById("adminArea").style.display =
+    "block";
+
+  carregarAdmin();
+}
+
+async function criarCarga() {
+
+  const mensagem =
+    document.getElementById("mensagem");
+
+  const dados = {
+
+    carga: document.getElementById("carga").value,
+
+    valor: document.getElementById("valor").value,
+
+    local_coleta:
+      document.getElementById("local_coleta").value,
+
+    local_entrega:
+      document.getElementById("local_entrega").value,
+
+    placa:
+      document.getElementById("placa").value,
+
+    motorista:
+      document.getElementById("motorista").value,
+
+    data_carga:
+      document.getElementById("data_carga").value,
+
+    observacao:
+      document.getElementById("observacao").value,
+
+    status:
+      document.getElementById("status").value
+
+  };
+
+  if (
+    !dados.carga ||
+    !dados.valor ||
+    !dados.local_coleta ||
+    !dados.local_entrega ||
+    !dados.placa ||
+    !dados.motorista
+  ) {
+
+    mensagem.textContent =
+      "Preencha todos os campos obrigatórios.";
+
+    return;
+  }
+
+  try {
+
+    const resposta = await fetch(
+      "/api/cargas",
+      {
+
+        method: "POST",
+
+        headers: {
+
+          "Content-Type": "application/json",
+
+          "Authorization":
+            "Bearer " + token
+
+        },
+
+        body: JSON.stringify(dados)
+
+      }
+    );
+
+    const resultado =
+      await resposta.json();
+
+    if (!resposta.ok) {
+
+      mensagem.textContent =
+        resultado.erro || "Erro ao criar carga.";
+
+      return;
+    }
+
+    mensagem.textContent =
+      "Carga criada com sucesso!";
+
+    limparFormulario();
+
+    carregarAdmin();
+
+  } catch (erro) {
+
+    mensagem.textContent =
+      "Erro ao conectar ao servidor.";
+
+  }
+}
+
+async function carregarAdmin() {
+
+  const lista =
+    document.getElementById("listaAdmin");
+
+  try {
+
+    const resposta =
+      await fetch("/api/cargas");
+
+    const cargas =
+      await resposta.json();
+
+    if (!cargas.length) {
+
+      lista.innerHTML =
+        "<p>Nenhuma carga cadastrada.</p>";
+
+      return;
+    }
+
+    lista.innerHTML =
+      cargas.map(carga => `
+
+        <div class="carga">
+
+          <h3>${escapar(carga.carga)}</h3>
+
+          <div class="info">
+
+            <div>
+              <span>Valor</span>
+              R$ ${Number(carga.valor).toFixed(2)}
+            </div>
+
+            <div>
+              <span>Motorista</span>
+              ${escapar(carga.motorista)}
+            </div>
+
+            <div>
+              <span>Placa</span>
+              ${escapar(carga.placa)}
+            </div>
+
+            <div>
+              <span>Coleta</span>
+              ${escapar(carga.local_coleta)}
+            </div>
+
+            <div>
+              <span>Entrega</span>
+              ${escapar(carga.local_entrega)}
+            </div>
+
+            <div>
+              <span>Status</span>
+              ${escapar(carga.status)}
+            </div>
+
+          </div>
+
+          <div class="acoes">
+
+            <button
+              class="btn-excluir"
+              onclick="excluirCarga(${carga.id})"
+            >
+              Excluir
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+  } catch (erro) {
+
+    lista.innerHTML =
+      "<p>Erro ao carregar cargas.</p>";
+
+  }
+}
+
+async function excluirCarga(id) {
+
+  if (!confirm("Deseja realmente excluir esta carga?")) {
+    return;
+  }
+
+  try {
+
+    const resposta =
+      await fetch(
+        "/api/cargas/" + id,
+        {
+
+          method: "DELETE",
+
+          headers: {
+            "Authorization":
+              "Bearer " + token
+          }
+
+        }
+      );
+
+    if (resposta.status === 401) {
+
+      sair();
+      return;
+
+    }
+
+    carregarAdmin();
+
+  } catch (erro) {
+
+    alert("Erro ao excluir carga.");
+
+  }
+}
+
+function limparFormulario() {
+
+  document.getElementById("carga").value = "";
+  document.getElementById("valor").value = "";
+  document.getElementById("local_coleta").value = "";
+  document.getElementById("local_entrega").value = "";
+  document.getElementById("placa").value = "";
+  document.getElementById("motorista").value = "";
+  document.getElementById("data_carga").value = "";
+  document.getElementById("observacao").value = "";
+  document.getElementById("status").value = "Disponível";
+
+}
+
+function sair() {
+
+  localStorage.removeItem("adminToken");
+
+  token = null;
+
+  document.getElementById("loginArea").style.display =
+    "block";
+
+  document.getElementById("adminArea").style.display =
+    "none";
+
+}
+
+function escapar(texto) {
+
+  if (
+    texto === null ||
+    texto === undefined
+  ) {
+    return "";
+  }
+
+  return String(texto)
+
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
