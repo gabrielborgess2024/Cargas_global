@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -47,6 +48,7 @@
       background: #0b0f14;
       color: white;
       outline: none;
+      font-size: 15px;
     }
 
     .campo textarea {
@@ -65,6 +67,11 @@
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
     }
 
     .btn-excluir {
@@ -91,7 +98,16 @@
 
     .mensagem {
       margin-top: 12px;
+      color: #62e58b;
+      font-size: 14px;
+    }
+
+    .erro {
       color: #ff7777;
+    }
+
+    .carga {
+      margin-bottom: 15px;
     }
 
     @media (max-width: 700px) {
@@ -100,6 +116,7 @@
       }
     }
   </style>
+
 </head>
 
 <body>
@@ -110,151 +127,203 @@
     <p>Administração de Cargas</p>
   </div>
 
-  <a href="/" class="admin-btn">Voltar</a>
+<a href="/" class="admin-btn">Voltar</a>
+
 </header>
 
 <main class="admin-container">
 
+  <!-- LOGIN -->
+
   <div id="loginArea" class="login">
 
-    <h2>Área Administrativa</h2>
+```
+<h2>Área Administrativa</h2>
 
-    <div class="campo">
-      <label>Senha</label>
-      <input
-        type="password"
-        id="senha"
-        placeholder="Digite sua senha"
-      >
-    </div>
+<div class="campo">
+  <label>Senha</label>
 
-    <button onclick="entrar()">Entrar</button>
+  <input
+    type="password"
+    id="senha"
+    placeholder="Digite sua senha"
+  >
+</div>
 
-    <div id="loginMensagem" class="mensagem"></div>
+<button onclick="entrar()">
+  Entrar
+</button>
+
+<div id="loginMensagem" class="mensagem"></div>
+```
 
   </div>
 
+  <!-- ÁREA ADMIN -->
+
   <div id="adminArea" style="display:none;">
 
-    <div class="painel">
+```
+<div class="painel">
 
-      <h2>Nova Carga</h2>
+  <h2>Nova Carga</h2>
 
-      <div class="grid">
+  <div class="grid">
 
-        <div class="campo">
-          <label>Carga</label>
-          <input
-            type="text"
-            id="carga"
-            placeholder="Ex: Soja"
-          >
-        </div>
+    <div class="campo">
+      <label>Carga</label>
 
-        <div class="campo">
-          <label>Valor</label>
-          <input
-            type="number"
-            id="valor"
-            step="0.01"
-            placeholder="Ex: 5000"
-          >
-        </div>
+      <input
+        type="text"
+        id="carga"
+        placeholder="Ex: Soja"
+      >
+    </div>
 
-        <div class="campo">
-          <label>Local para pegar</label>
-          <input
-            type="text"
-            id="local_coleta"
-            placeholder="Ex: Porto Alegre"
-          >
-        </div>
 
-        <div class="campo">
-          <label>Local de entrega</label>
-          <input
-            type="text"
-            id="local_entrega"
-            placeholder="Ex: São Paulo"
-          >
-        </div>
+    <div class="campo">
+      <label>Valor</label>
 
-        <div class="campo">
-          <label>Placa do caminhão</label>
-          <input
-            type="text"
-            id="placa"
-            placeholder="Ex: ABC1D23"
-          >
-        </div>
+      <input
+        type="number"
+        id="valor"
+        step="0.01"
+        inputmode="decimal"
+        placeholder="Ex: 5000"
+      >
+    </div>
 
-        <div class="campo">
-          <label>Nome do motorista</label>
-          <input
-            type="text"
-            id="motorista"
-            placeholder="Nome do motorista"
-          >
-        </div>
 
-        <div class="campo">
-          <label>Data da carga</label>
-          <input
-            type="date"
-            id="data_carga"
-          >
-        </div>
+    <div class="campo">
+      <label>Local para pegar a carga</label>
 
-        <div class="campo">
-          <label>Status</label>
+      <input
+        type="text"
+        id="local_coleta"
+        placeholder="Ex: Porto Alegre"
+      >
+    </div>
 
-          <select id="status">
-            <option value="Disponível">Disponível</option>
-            <option value="Em andamento">Em andamento</option>
-            <option value="Entregue">Entregue</option>
-          </select>
 
-        </div>
+    <div class="campo">
+      <label>Local de entrega</label>
 
-      </div>
+      <input
+        type="text"
+        id="local_entrega"
+        placeholder="Ex: São Paulo"
+      >
+    </div>
 
-      <div class="campo">
-        <label>Observação</label>
 
-        <textarea
-          id="observacao"
-          placeholder="Alguma informação sobre a carga..."
-        ></textarea>
-      </div>
+    <div class="campo">
+      <label>Placa do caminhão</label>
 
-      <div class="acoes">
+      <input
+        type="text"
+        id="placa"
+        placeholder="Ex: ABC1D23"
+      >
+    </div>
 
-        <button onclick="criarCarga()">
-          Criar carga
-        </button>
 
-        <button
-          onclick="sair()"
-          class="btn-sair"
-        >
-          Sair
-        </button>
+    <div class="campo">
+      <label>Nome do motorista</label>
 
-      </div>
+      <input
+        type="text"
+        id="motorista"
+        placeholder="Nome do motorista"
+      >
+    </div>
 
-      <div id="mensagem" class="mensagem"></div>
+
+    <div class="campo">
+      <label>Data da carga</label>
+
+      <input
+        type="date"
+        id="data_carga"
+      >
+    </div>
+
+
+    <div class="campo">
+      <label>Status</label>
+
+      <select id="status">
+
+        <option value="Disponível">
+          Disponível
+        </option>
+
+        <option value="Em andamento">
+          Em andamento
+        </option>
+
+        <option value="Entregue">
+          Entregue
+        </option>
+
+      </select>
 
     </div>
 
-    <div class="painel">
+  </div>
 
-      <h2>Cargas cadastradas</h2>
 
-      <div id="listaAdmin">
-        Carregando...
-      </div>
+  <div class="campo">
 
-    </div>
+    <label>Observação</label>
+
+    <textarea
+      id="observacao"
+      placeholder="Alguma informação sobre a carga..."
+    ></textarea>
+
+  </div>
+
+
+  <div class="acoes">
+
+    <button onclick="criarCarga()">
+      Criar carga
+    </button>
+
+    <button
+      onclick="limparFormulario()"
+      class="btn-sair"
+    >
+      Limpar
+    </button>
+
+    <button
+      onclick="sair()"
+      class="btn-sair"
+    >
+      Sair
+    </button>
+
+  </div>
+
+
+  <div id="mensagem" class="mensagem"></div>
+
+</div>
+
+
+<!-- LISTA -->
+
+<div class="painel">
+
+  <h2>Cargas cadastradas</h2>
+
+  <div id="listaAdmin">
+    Carregando...
+  </div>
+
+</div>
+```
 
   </div>
 
@@ -264,36 +333,67 @@
 
 let token = localStorage.getItem("adminToken");
 
+
+/* =========================
+   INICIAR
+========================= */
+
 if (token) {
   mostrarAdmin();
 }
 
+
+/* =========================
+   LOGIN
+========================= */
+
 async function entrar() {
 
-  const senha = document.getElementById("senha").value;
-  const mensagem = document.getElementById("loginMensagem");
+  const senha =
+    document.getElementById("senha").value.trim();
 
-  mensagem.textContent = "";
+  const mensagem =
+    document.getElementById("loginMensagem");
+
+  mensagem.className = "mensagem";
+  mensagem.textContent = "Entrando...";
+
+
+  if (!senha) {
+
+    mensagem.className = "mensagem erro";
+    mensagem.textContent =
+      "Digite sua senha.";
+
+    return;
+  }
+
 
   try {
 
-    const resposta = await fetch("/api/login", {
+    const resposta = await fetch(
+      "/api/login",
+      {
+        method: "POST",
 
-      method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        body: JSON.stringify({
+          senha: senha
+        })
+      }
+    );
 
-      body: JSON.stringify({
-        senha
-      })
 
-    });
+    const dados =
+      await resposta.json();
 
-    const dados = await resposta.json();
 
     if (!resposta.ok) {
+
+      mensagem.className = "mensagem erro";
 
       mensagem.textContent =
         dados.erro || "Senha incorreta.";
@@ -301,10 +401,12 @@ async function entrar() {
       return;
     }
 
+
     localStorage.setItem(
       "adminToken",
       dados.token
     );
+
 
     token = dados.token;
 
@@ -312,132 +414,301 @@ async function entrar() {
 
   } catch (erro) {
 
+    console.error(erro);
+
+    mensagem.className = "mensagem erro";
+
     mensagem.textContent =
       "Erro ao conectar ao servidor.";
-
   }
 }
 
+
+/* =========================
+   MOSTRAR ADMIN
+========================= */
+
 function mostrarAdmin() {
 
-  document.getElementById("loginArea").style.display =
-    "none";
+  document.getElementById(
+    "loginArea"
+  ).style.display = "none";
 
-  document.getElementById("adminArea").style.display =
-    "block";
+
+  document.getElementById(
+    "adminArea"
+  ).style.display = "block";
+
 
   carregarAdmin();
 }
+
+
+/* =========================
+   CRIAR CARGA
+========================= */
 
 async function criarCarga() {
 
   const mensagem =
     document.getElementById("mensagem");
 
-  const dados = {
+  mensagem.className = "mensagem";
+  mensagem.textContent = "Verificando dados...";
 
-    carga: document.getElementById("carga").value,
 
-    valor: document.getElementById("valor").value,
+  const carga =
+    document.getElementById("carga").value.trim();
 
-    local_coleta:
-      document.getElementById("local_coleta").value,
+  const valor =
+    document.getElementById("valor").value.trim();
 
-    local_entrega:
-      document.getElementById("local_entrega").value,
+  const localColeta =
+    document.getElementById("local_coleta").value.trim();
 
-    placa:
-      document.getElementById("placa").value,
+  const localEntrega =
+    document.getElementById("local_entrega").value.trim();
 
-    motorista:
-      document.getElementById("motorista").value,
+  const placa =
+    document.getElementById("placa").value.trim();
 
-    data_carga:
-      document.getElementById("data_carga").value,
+  const motorista =
+    document.getElementById("motorista").value.trim();
 
-    observacao:
-      document.getElementById("observacao").value,
+  const dataCarga =
+    document.getElementById("data_carga").value;
 
-    status:
-      document.getElementById("status").value
+  const observacao =
+    document.getElementById("observacao").value.trim();
 
-  };
+  const status =
+    document.getElementById("status").value;
 
-  if (
-    !dados.carga ||
-    !dados.valor ||
-    !dados.local_coleta ||
-    !dados.local_entrega ||
-    !dados.placa ||
-    !dados.motorista
-  ) {
 
-    mensagem.textContent =
-      "Preencha todos os campos obrigatórios.";
+  /* VERIFICAÇÕES */
+
+  if (!carga) {
+
+    mostrarErro(
+      "Preencha o campo Carga."
+    );
 
     return;
   }
 
-  try {
 
-    const resposta = await fetch(
-      "/api/cargas",
-      {
+  if (!valor) {
 
-        method: "POST",
-
-        headers: {
-
-          "Content-Type": "application/json",
-
-          "Authorization":
-            "Bearer " + token
-
-        },
-
-        body: JSON.stringify(dados)
-
-      }
+    mostrarErro(
+      "Preencha o campo Valor."
     );
 
-    const resultado =
-      await resposta.json();
-
-    if (!resposta.ok) {
-
-      mensagem.textContent =
-        resultado.erro || "Erro ao criar carga.";
-
-      return;
-    }
-
-    mensagem.textContent =
-      "Carga criada com sucesso!";
-
-    limparFormulario();
-
-    carregarAdmin();
-
-  } catch (erro) {
-
-    mensagem.textContent =
-      "Erro ao conectar ao servidor.";
-
+    return;
   }
-}
 
-async function carregarAdmin() {
 
-  const lista =
-    document.getElementById("listaAdmin");
+  if (!localColeta) {
+
+    mostrarErro(
+      "Preencha o local onde pegará a carga."
+    );
+
+    return;
+  }
+
+
+  if (!localEntrega) {
+
+    mostrarErro(
+      "Preencha o local de entrega."
+    );
+
+    return;
+  }
+
+
+  if (!placa) {
+
+    mostrarErro(
+      "Preencha a placa do caminhão."
+    );
+
+    return;
+  }
+
+
+  if (!motorista) {
+
+    mostrarErro(
+      "Preencha o nome do motorista."
+    );
+
+    return;
+  }
+
+
+  if (!token) {
+
+    mostrarErro(
+      "Você não está conectado como administrador."
+    );
+
+    return;
+  }
+
+
+  const dados = {
+
+    carga: carga,
+
+    valor: Number(
+      valor.replace(",", ".")
+    ),
+
+    local_coleta: localColeta,
+
+    local_entrega: localEntrega,
+
+    placa: placa,
+
+    motorista: motorista,
+
+    data_carga:
+      dataCarga || null,
+
+    observacao:
+      observacao,
+
+    status:
+      status || "Disponível"
+  };
+
+
+  mensagem.textContent =
+    "Salvando carga...";
+
 
   try {
 
     const resposta =
-      await fetch("/api/cargas");
+      await fetch(
+        "/api/cargas",
+        {
+          method: "POST",
+
+          headers: {
+
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              "Bearer " + token
+          },
+
+          body:
+            JSON.stringify(dados)
+        }
+      );
+
+
+    const resultado =
+      await resposta.json();
+
+
+    if (resposta.status === 401) {
+
+      localStorage.removeItem(
+        "adminToken"
+      );
+
+      token = null;
+
+      document.getElementById(
+        "loginArea"
+      ).style.display = "block";
+
+      document.getElementById(
+        "adminArea"
+      ).style.display = "none";
+
+      mostrarErroLogin(
+        "Sua sessão expirou. Entre novamente."
+      );
+
+      return;
+    }
+
+
+    if (!resposta.ok) {
+
+      mostrarErro(
+        resultado.erro ||
+        "Erro ao criar carga."
+      );
+
+      return;
+    }
+
+
+    mensagem.className =
+      "mensagem";
+
+    mensagem.textContent =
+      "Carga criada com sucesso!";
+
+
+    limparFormulario();
+
+
+    await carregarAdmin();
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    mostrarErro(
+      "Erro ao conectar ao servidor."
+    );
+  }
+}
+
+
+/* =========================
+   CARREGAR CARGAS
+========================= */
+
+async function carregarAdmin() {
+
+  const lista =
+    document.getElementById(
+      "listaAdmin"
+    );
+
+
+  lista.innerHTML =
+    "<p>Carregando cargas...</p>";
+
+
+  try {
+
+    const resposta =
+      await fetch(
+        "/api/cargas"
+      );
+
+
+    if (!resposta.ok) {
+
+      lista.innerHTML =
+        "<p>Erro ao carregar cargas.</p>";
+
+      return;
+    }
+
 
     const cargas =
       await resposta.json();
+
 
     if (!cargas.length) {
 
@@ -447,43 +718,59 @@ async function carregarAdmin() {
       return;
     }
 
+
     lista.innerHTML =
-      cargas.map(carga => `
+      cargas.map(
+        carga => `
 
         <div class="carga">
 
-          <h3>${escapar(carga.carga)}</h3>
+          <h3>
+            ${escapar(carga.carga)}
+          </h3>
 
           <div class="info">
 
             <div>
               <span>Valor</span>
-              R$ ${Number(carga.valor).toFixed(2)}
+              R$ ${Number(
+                carga.valor
+              ).toFixed(2)}
             </div>
 
             <div>
               <span>Motorista</span>
-              ${escapar(carga.motorista)}
+              ${escapar(
+                carga.motorista
+              )}
             </div>
 
             <div>
               <span>Placa</span>
-              ${escapar(carga.placa)}
+              ${escapar(
+                carga.placa
+              )}
             </div>
 
             <div>
               <span>Coleta</span>
-              ${escapar(carga.local_coleta)}
+              ${escapar(
+                carga.local_coleta
+              )}
             </div>
 
             <div>
               <span>Entrega</span>
-              ${escapar(carga.local_entrega)}
+              ${escapar(
+                carga.local_entrega
+              )}
             </div>
 
             <div>
               <span>Status</span>
-              ${escapar(carga.status)}
+              ${escapar(
+                carga.status
+              )}
             </div>
 
           </div>
@@ -500,22 +787,35 @@ async function carregarAdmin() {
           </div>
 
         </div>
-
-      `).join("");
+      `
+      ).join("");
 
   } catch (erro) {
 
+    console.error(erro);
+
     lista.innerHTML =
       "<p>Erro ao carregar cargas.</p>";
-
   }
 }
 
+
+/* =========================
+   EXCLUIR
+========================= */
+
 async function excluirCarga(id) {
 
-  if (!confirm("Deseja realmente excluir esta carga?")) {
+  const confirmar =
+    confirm(
+      "Deseja realmente excluir esta carga?"
+    );
+
+
+  if (!confirmar) {
     return;
   }
+
 
   try {
 
@@ -523,60 +823,157 @@ async function excluirCarga(id) {
       await fetch(
         "/api/cargas/" + id,
         {
-
           method: "DELETE",
 
           headers: {
             "Authorization":
               "Bearer " + token
           }
-
         }
       );
+
 
     if (resposta.status === 401) {
 
       sair();
-      return;
 
+      return;
     }
+
+
+    if (!resposta.ok) {
+
+      alert(
+        "Não foi possível excluir a carga."
+      );
+
+      return;
+    }
+
 
     carregarAdmin();
 
   } catch (erro) {
 
-    alert("Erro ao excluir carga.");
+    console.error(erro);
 
+    alert(
+      "Erro ao conectar ao servidor."
+    );
   }
 }
 
+
+/* =========================
+   LIMPAR FORMULÁRIO
+========================= */
+
 function limparFormulario() {
 
-  document.getElementById("carga").value = "";
-  document.getElementById("valor").value = "";
-  document.getElementById("local_coleta").value = "";
-  document.getElementById("local_entrega").value = "";
-  document.getElementById("placa").value = "";
-  document.getElementById("motorista").value = "";
-  document.getElementById("data_carga").value = "";
-  document.getElementById("observacao").value = "";
-  document.getElementById("status").value = "Disponível";
+  document.getElementById(
+    "carga"
+  ).value = "";
 
+  document.getElementById(
+    "valor"
+  ).value = "";
+
+  document.getElementById(
+    "local_coleta"
+  ).value = "";
+
+  document.getElementById(
+    "local_entrega"
+  ).value = "";
+
+  document.getElementById(
+    "placa"
+  ).value = "";
+
+  document.getElementById(
+    "motorista"
+  ).value = "";
+
+  document.getElementById(
+    "data_carga"
+  ).value = "";
+
+  document.getElementById(
+    "observacao"
+  ).value = "";
+
+  document.getElementById(
+    "status"
+  ).value = "Disponível";
 }
+
+
+/* =========================
+   SAIR
+========================= */
 
 function sair() {
 
-  localStorage.removeItem("adminToken");
+  localStorage.removeItem(
+    "adminToken"
+  );
 
   token = null;
 
-  document.getElementById("loginArea").style.display =
-    "block";
 
-  document.getElementById("adminArea").style.display =
-    "none";
+  document.getElementById(
+    "loginArea"
+  ).style.display = "block";
 
+
+  document.getElementById(
+    "adminArea"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "senha"
+  ).value = "";
 }
+
+
+/* =========================
+   ERROS
+========================= */
+
+function mostrarErro(texto) {
+
+  const mensagem =
+    document.getElementById(
+      "mensagem"
+    );
+
+  mensagem.className =
+    "mensagem erro";
+
+  mensagem.textContent =
+    texto;
+}
+
+
+function mostrarErroLogin(texto) {
+
+  const mensagem =
+    document.getElementById(
+      "loginMensagem"
+    );
+
+  mensagem.className =
+    "mensagem erro";
+
+  mensagem.textContent =
+    texto;
+}
+
+
+/* =========================
+   SEGURANÇA
+========================= */
 
 function escapar(texto) {
 
@@ -587,14 +984,33 @@ function escapar(texto) {
     return "";
   }
 
+
   return String(texto)
 
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 }
 
 </script>
