@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Truck - Cargas</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+  <header>
+    <div>
+      <h1>GLOBAL TRUCK</h1>
+      <p>Painel de Cargas</p>
+    </div>
+
+    <a href="/admin.html" class="admin-btn">Área Admin</a>
+  </header>
+
+  <main>
+    <section class="resumo">
+      <div class="card">
+        <span>Total de cargas</span>
+        <strong id="total">0</strong>
+      </div>
+
+      <div class="card">
+        <span>Disponíveis</span>
+        <strong id="disponiveis">0</strong>
+      </div>
+
+      <div class="card">
+        <span>Em andamento</span>
+        <strong id="andamento">0</strong>
+      </div>
+
+      <div class="card">
+        <span>Entregues</span>
+        <strong id="entregues">0</strong>
+      </div>
+    </section>
+
+    <section>
+      <div class="titulo">
+        <h2>Cargas disponíveis</h2>
+        <button onclick="carregarCargas()">Atualizar</button>
+      </div>
+
+      <div id="cargas" class="cargas">
+        <p class="carregando">Carregando cargas...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Global Truck Simulator • Painel da empresa
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
