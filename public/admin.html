@@ -1,379 +1,335 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administração - Global Truck</title>
-  <link rel="stylesheet" href="/style.css">
+  <title>Área Admin - Global Truck</title>
 
   <style>
-    .admin-container {
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: #fff;
+    }
+
+    .container {
+      width: 100%;
       max-width: 900px;
       margin: auto;
-      padding: 25px 15px;
-    }
-
-    .painel {
-      background: #111820;
-      border: 1px solid #26313d;
-      border-radius: 12px;
       padding: 20px;
-      margin-bottom: 20px;
     }
 
-    .painel h2 {
-      margin-bottom: 20px;
-      color: #00aaff;
+    .card {
+      background: #1f2937;
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,.3);
     }
 
-    .campo {
-      margin-bottom: 15px;
+    h1, h2 {
+      margin-top: 0;
     }
 
-    .campo label {
-      display: block;
-      color: #9aa7b5;
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
-
-    .campo input,
-    .campo select,
-    .campo textarea {
+    input,
+    select,
+    textarea {
       width: 100%;
-      padding: 12px;
-      border: 1px solid #26313d;
+      padding: 13px;
+      margin-top: 7px;
+      margin-bottom: 15px;
+      border: 1px solid #374151;
       border-radius: 8px;
-      background: #0b0f14;
+      background: #111827;
       color: white;
-      outline: none;
-      font-size: 15px;
+      font-size: 16px;
     }
 
-    .campo textarea {
+    textarea {
       min-height: 90px;
       resize: vertical;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .acoes {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
+    label {
+      font-weight: bold;
+      display: block;
     }
 
     button {
-      border: none;
+      width: 100%;
+      padding: 14px;
+      border: 0;
+      border-radius: 8px;
+      background: #16a34a;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
+      margin-top: 5px;
     }
 
-    .btn-excluir {
-      background: #b3261e;
+    button:hover {
+      opacity: .9;
     }
 
-    .btn-sair {
-      background: #444d57;
+    .btn-danger {
+      background: #dc2626;
     }
 
-    .login {
-      max-width: 400px;
-      margin: 60px auto;
-      padding: 20px;
-      background: #111820;
-      border: 1px solid #26313d;
-      border-radius: 12px;
+    .btn-secondary {
+      background: #374151;
     }
 
-    .login h2 {
-      margin-bottom: 20px;
-      color: #00aaff;
-    }
-
-    .mensagem {
-      margin-top: 12px;
-      color: #62e58b;
-      font-size: 14px;
+    .hidden {
+      display: none !important;
     }
 
     .erro {
-      color: #ff7777;
+      color: #f87171;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .sucesso {
+      color: #4ade80;
+      margin-top: 15px;
+      font-weight: bold;
     }
 
     .carga {
-      margin-bottom: 15px;
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 12px;
+      padding: 18px;
+      margin-top: 15px;
     }
 
-    @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+    .carga strong {
+      color: #4ade80;
+    }
+
+    .topo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topo button {
+      width: auto;
+      padding: 10px 15px;
     }
   </style>
-
 </head>
 
 <body>
 
-<header>
-  <div>
-    <h1>GLOBAL TRUCK</h1>
-    <p>Administração de Cargas</p>
-  </div>
-
-<a href="/" class="admin-btn">Voltar</a>
-
-</header>
-
-<main class="admin-container">
+<div class="container">
 
   <!-- LOGIN -->
+  <div id="loginArea" class="card">
 
-  <div id="loginArea" class="login">
+    <h1>🔐 Área Administrativa</h1>
 
-```
-<h2>Área Administrativa</h2>
+    <p>Digite a senha de administrador para continuar.</p>
 
-<div class="campo">
-  <label>Senha</label>
-
-  <input
-    type="password"
-    id="senha"
-    placeholder="Digite sua senha"
-  >
-</div>
-
-<button onclick="entrar()">
-  Entrar
-</button>
-
-<div id="loginMensagem" class="mensagem"></div>
-```
-
-  </div>
-
-  <!-- ÁREA ADMIN -->
-
-  <div id="adminArea" style="display:none;">
-
-```
-<div class="painel">
-
-  <h2>Nova Carga</h2>
-
-  <div class="grid">
-
-    <div class="campo">
-      <label>Carga</label>
-
-      <input
-        type="text"
-        id="carga"
-        placeholder="Ex: Soja"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Valor</label>
-
-      <input
-        type="number"
-        id="valor"
-        step="0.01"
-        inputmode="decimal"
-        placeholder="Ex: 5000"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Local para pegar a carga</label>
-
-      <input
-        type="text"
-        id="local_coleta"
-        placeholder="Ex: Porto Alegre"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Local de entrega</label>
-
-      <input
-        type="text"
-        id="local_entrega"
-        placeholder="Ex: São Paulo"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Placa do caminhão</label>
-
-      <input
-        type="text"
-        id="placa"
-        placeholder="Ex: ABC1D23"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Nome do motorista</label>
-
-      <input
-        type="text"
-        id="motorista"
-        placeholder="Nome do motorista"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Data da carga</label>
-
-      <input
-        type="date"
-        id="data_carga"
-      >
-    </div>
-
-
-    <div class="campo">
-      <label>Status</label>
-
-      <select id="status">
-
-        <option value="Disponível">
-          Disponível
-        </option>
-
-        <option value="Em andamento">
-          Em andamento
-        </option>
-
-        <option value="Entregue">
-          Entregue
-        </option>
-
-      </select>
-
-    </div>
-
-  </div>
-
-
-  <div class="campo">
-
-    <label>Observação</label>
-
-    <textarea
-      id="observacao"
-      placeholder="Alguma informação sobre a carga..."
-    ></textarea>
-
-  </div>
-
-
-  <div class="acoes">
-
-    <button onclick="criarCarga()">
-      Criar carga
-    </button>
-
-    <button
-      onclick="limparFormulario()"
-      class="btn-sair"
+    <label for="senha">Senha</label>
+    <input
+      type="password"
+      id="senha"
+      placeholder="Digite sua senha"
+      autocomplete="current-password"
     >
-      Limpar
+
+    <button id="btnLogin">
+      ENTRAR
     </button>
 
-    <button
-      onclick="sair()"
-      class="btn-sair"
-    >
-      Sair
-    </button>
+    <div id="loginMensagem"></div>
 
   </div>
 
 
-  <div id="mensagem" class="mensagem"></div>
+  <!-- PAINEL ADMIN -->
+  <div id="painelArea" class="hidden">
+
+    <div class="card">
+
+      <div class="topo">
+        <h1>🚛 Painel de Cargas</h1>
+
+        <button
+          id="btnSair"
+          class="btn-secondary"
+        >
+          Sair
+        </button>
+      </div>
+
+      <hr>
+
+      <h2>Nova carga</h2>
+
+      <form id="formCarga">
+
+        <label for="carga">Carga *</label>
+        <input
+          type="text"
+          id="carga"
+          placeholder="Ex: Soja, milho, madeira..."
+        >
+
+        <label for="valor">Valor da carga *</label>
+        <input
+          type="number"
+          id="valor"
+          placeholder="Ex: 15000"
+          step="0.01"
+        >
+
+        <label for="local_coleta">Local onde pegar a carga *</label>
+        <input
+          type="text"
+          id="local_coleta"
+          placeholder="Ex: Porto Alegre"
+        >
+
+        <label for="local_entrega">Local onde entregar *</label>
+        <input
+          type="text"
+          id="local_entrega"
+          placeholder="Ex: São Paulo"
+        >
+
+        <label for="placa">Placa do caminhão *</label>
+        <input
+          type="text"
+          id="placa"
+          placeholder="Ex: ABC1D23"
+        >
+
+        <label for="motorista">Nome do motorista *</label>
+        <input
+          type="text"
+          id="motorista"
+          placeholder="Nome do motorista"
+        >
+
+        <label for="data_carga">Data da carga</label>
+        <input
+          type="date"
+          id="data_carga"
+        >
+
+        <label for="status">Status</label>
+        <select id="status">
+          <option value="Disponível">Disponível</option>
+          <option value="Em andamento">Em andamento</option>
+          <option value="Entregue">Entregue</option>
+        </select>
+
+        <label for="observacao">Observação</label>
+        <textarea
+          id="observacao"
+          placeholder="Alguma informação adicional..."
+        ></textarea>
+
+        <button type="submit">
+          CRIAR CARGA
+        </button>
+
+      </form>
+
+      <div id="mensagem"></div>
+
+    </div>
+
+
+    <!-- LISTA -->
+    <div class="card">
+
+      <h2>Cargas cadastradas</h2>
+
+      <div id="listaCargas">
+        Carregando...
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
-
-<!-- LISTA -->
-
-<div class="painel">
-
-  <h2>Cargas cadastradas</h2>
-
-  <div id="listaAdmin">
-    Carregando...
-  </div>
-
-</div>
-```
-
-  </div>
-
-</main>
 
 <script>
 
-let token = localStorage.getItem("adminToken");
+  const loginArea = document.getElementById("loginArea");
+  const painelArea = document.getElementById("painelArea");
 
+  const senhaInput = document.getElementById("senha");
+  const btnLogin = document.getElementById("btnLogin");
+  const btnSair = document.getElementById("btnSair");
 
-/* =========================
-   INICIAR
-========================= */
-
-if (token) {
-  mostrarAdmin();
-}
-
-
-/* =========================
-   LOGIN
-========================= */
-
-async function entrar() {
-
-  const senha =
-    document.getElementById("senha").value.trim();
-
-  const mensagem =
+  const loginMensagem =
     document.getElementById("loginMensagem");
 
-  mensagem.className = "mensagem";
-  mensagem.textContent = "Entrando...";
+  const mensagem =
+    document.getElementById("mensagem");
+
+  const formCarga =
+    document.getElementById("formCarga");
+
+  const listaCargas =
+    document.getElementById("listaCargas");
 
 
-  if (!senha) {
+  // NÃO ENTRA AUTOMATICAMENTE NO PAINEL
+  // O usuário sempre precisa informar a senha.
 
-    mensagem.className = "mensagem erro";
-    mensagem.textContent =
-      "Digite sua senha.";
+  function mostrarLogin() {
 
-    return;
+    loginArea.classList.remove("hidden");
+    painelArea.classList.add("hidden");
+
+    senhaInput.value = "";
+    senhaInput.focus();
   }
 
 
-  try {
+  function mostrarPainel() {
 
-    const resposta = await fetch(
-      "/api/login",
-      {
+    loginArea.classList.add("hidden");
+    painelArea.classList.remove("hidden");
+
+    carregarCargas();
+  }
+
+
+  // LOGIN
+  async function fazerLogin() {
+
+    const senha = senhaInput.value.trim();
+
+    if (!senha) {
+
+      loginMensagem.innerHTML =
+        '<div class="erro">Digite a senha.</div>';
+
+      return;
+    }
+
+    btnLogin.disabled = true;
+    btnLogin.innerText = "ENTRANDO...";
+
+    try {
+
+      const resposta = await fetch("/api/login", {
+
         method: "POST",
 
         headers: {
@@ -381,637 +337,488 @@ async function entrar() {
         },
 
         body: JSON.stringify({
-          senha: senha
+          password: senha
         })
+
+      });
+
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+
+        loginMensagem.innerHTML =
+          '<div class="erro">' +
+          (dados.error || "Senha incorreta.") +
+          '</div>';
+
+        return;
       }
-    );
 
+      if (!dados.token) {
 
-    const dados =
-      await resposta.json();
+        loginMensagem.innerHTML =
+          '<div class="erro">Servidor não retornou o token.</div>';
 
+        return;
+      }
 
-    if (!resposta.ok) {
-
-      mensagem.className = "mensagem erro";
-
-      mensagem.textContent =
-        dados.erro || "Senha incorreta.";
-
-      return;
-    }
-
-
-    localStorage.setItem(
-      "adminToken",
-      dados.token
-    );
-
-
-    token = dados.token;
-
-    mostrarAdmin();
-
-  } catch (erro) {
-
-    console.error(erro);
-
-    mensagem.className = "mensagem erro";
-
-    mensagem.textContent =
-      "Erro ao conectar ao servidor.";
-  }
-}
-
-
-/* =========================
-   MOSTRAR ADMIN
-========================= */
-
-function mostrarAdmin() {
-
-  document.getElementById(
-    "loginArea"
-  ).style.display = "none";
-
-
-  document.getElementById(
-    "adminArea"
-  ).style.display = "block";
-
-
-  carregarAdmin();
-}
-
-
-/* =========================
-   CRIAR CARGA
-========================= */
-
-async function criarCarga() {
-
-  const mensagem =
-    document.getElementById("mensagem");
-
-  mensagem.className = "mensagem";
-  mensagem.textContent = "Verificando dados...";
-
-
-  const carga =
-    document.getElementById("carga").value.trim();
-
-  const valor =
-    document.getElementById("valor").value.trim();
-
-  const localColeta =
-    document.getElementById("local_coleta").value.trim();
-
-  const localEntrega =
-    document.getElementById("local_entrega").value.trim();
-
-  const placa =
-    document.getElementById("placa").value.trim();
-
-  const motorista =
-    document.getElementById("motorista").value.trim();
-
-  const dataCarga =
-    document.getElementById("data_carga").value;
-
-  const observacao =
-    document.getElementById("observacao").value.trim();
-
-  const status =
-    document.getElementById("status").value;
-
-
-  /* VERIFICAÇÕES */
-
-  if (!carga) {
-
-    mostrarErro(
-      "Preencha o campo Carga."
-    );
-
-    return;
-  }
-
-
-  if (!valor) {
-
-    mostrarErro(
-      "Preencha o campo Valor."
-    );
-
-    return;
-  }
-
-
-  if (!localColeta) {
-
-    mostrarErro(
-      "Preencha o local onde pegará a carga."
-    );
-
-    return;
-  }
-
-
-  if (!localEntrega) {
-
-    mostrarErro(
-      "Preencha o local de entrega."
-    );
-
-    return;
-  }
-
-
-  if (!placa) {
-
-    mostrarErro(
-      "Preencha a placa do caminhão."
-    );
-
-    return;
-  }
-
-
-  if (!motorista) {
-
-    mostrarErro(
-      "Preencha o nome do motorista."
-    );
-
-    return;
-  }
-
-
-  if (!token) {
-
-    mostrarErro(
-      "Você não está conectado como administrador."
-    );
-
-    return;
-  }
-
-
-  const dados = {
-
-    carga: carga,
-
-    valor: Number(
-      valor.replace(",", ".")
-    ),
-
-    local_coleta: localColeta,
-
-    local_entrega: localEntrega,
-
-    placa: placa,
-
-    motorista: motorista,
-
-    data_carga:
-      dataCarga || null,
-
-    observacao:
-      observacao,
-
-    status:
-      status || "Disponível"
-  };
-
-
-  mensagem.textContent =
-    "Salvando carga...";
-
-
-  try {
-
-    const resposta =
-      await fetch(
-        "/api/cargas",
-        {
-          method: "POST",
-
-          headers: {
-
-            "Content-Type":
-              "application/json",
-
-            "Authorization":
-              "Bearer " + token
-          },
-
-          body:
-            JSON.stringify(dados)
-        }
+      localStorage.setItem(
+        "admin_token",
+        dados.token
       );
 
+      loginMensagem.innerHTML = "";
 
-    const resultado =
-      await resposta.json();
+      mostrarPainel();
 
+    } catch (erro) {
 
-    if (resposta.status === 401) {
+      console.error(erro);
 
-      localStorage.removeItem(
-        "adminToken"
-      );
+      loginMensagem.innerHTML =
+        '<div class="erro">Erro ao conectar ao servidor.</div>';
 
-      token = null;
+    } finally {
 
-      document.getElementById(
-        "loginArea"
-      ).style.display = "block";
+      btnLogin.disabled = false;
+      btnLogin.innerText = "ENTRAR";
 
-      document.getElementById(
-        "adminArea"
-      ).style.display = "none";
-
-      mostrarErroLogin(
-        "Sua sessão expirou. Entre novamente."
-      );
-
-      return;
     }
-
-
-    if (!resposta.ok) {
-
-      mostrarErro(
-        resultado.erro ||
-        "Erro ao criar carga."
-      );
-
-      return;
-    }
-
-
-    mensagem.className =
-      "mensagem";
-
-    mensagem.textContent =
-      "Carga criada com sucesso!";
-
-
-    limparFormulario();
-
-
-    await carregarAdmin();
-
-  } catch (erro) {
-
-    console.error(erro);
-
-    mostrarErro(
-      "Erro ao conectar ao servidor."
-    );
-  }
-}
-
-
-/* =========================
-   CARREGAR CARGAS
-========================= */
-
-async function carregarAdmin() {
-
-  const lista =
-    document.getElementById(
-      "listaAdmin"
-    );
-
-
-  lista.innerHTML =
-    "<p>Carregando cargas...</p>";
-
-
-  try {
-
-    const resposta =
-      await fetch(
-        "/api/cargas"
-      );
-
-
-    if (!resposta.ok) {
-
-      lista.innerHTML =
-        "<p>Erro ao carregar cargas.</p>";
-
-      return;
-    }
-
-
-    const cargas =
-      await resposta.json();
-
-
-    if (!cargas.length) {
-
-      lista.innerHTML =
-        "<p>Nenhuma carga cadastrada.</p>";
-
-      return;
-    }
-
-
-    lista.innerHTML =
-      cargas.map(
-        carga => `
-
-        <div class="carga">
-
-          <h3>
-            ${escapar(carga.carga)}
-          </h3>
-
-          <div class="info">
-
-            <div>
-              <span>Valor</span>
-              R$ ${Number(
-                carga.valor
-              ).toFixed(2)}
-            </div>
-
-            <div>
-              <span>Motorista</span>
-              ${escapar(
-                carga.motorista
-              )}
-            </div>
-
-            <div>
-              <span>Placa</span>
-              ${escapar(
-                carga.placa
-              )}
-            </div>
-
-            <div>
-              <span>Coleta</span>
-              ${escapar(
-                carga.local_coleta
-              )}
-            </div>
-
-            <div>
-              <span>Entrega</span>
-              ${escapar(
-                carga.local_entrega
-              )}
-            </div>
-
-            <div>
-              <span>Status</span>
-              ${escapar(
-                carga.status
-              )}
-            </div>
-
-          </div>
-
-          <div class="acoes">
-
-            <button
-              class="btn-excluir"
-              onclick="excluirCarga(${carga.id})"
-            >
-              Excluir
-            </button>
-
-          </div>
-
-        </div>
-      `
-      ).join("");
-
-  } catch (erro) {
-
-    console.error(erro);
-
-    lista.innerHTML =
-      "<p>Erro ao carregar cargas.</p>";
-  }
-}
-
-
-/* =========================
-   EXCLUIR
-========================= */
-
-async function excluirCarga(id) {
-
-  const confirmar =
-    confirm(
-      "Deseja realmente excluir esta carga?"
-    );
-
-
-  if (!confirmar) {
-    return;
   }
 
 
-  try {
-
-    const resposta =
-      await fetch(
-        "/api/cargas/" + id,
-        {
-          method: "DELETE",
-
-          headers: {
-            "Authorization":
-              "Bearer " + token
-          }
-        }
-      );
-
-
-    if (resposta.status === 401) {
-
-      sair();
-
-      return;
-    }
-
-
-    if (!resposta.ok) {
-
-      alert(
-        "Não foi possível excluir a carga."
-      );
-
-      return;
-    }
-
-
-    carregarAdmin();
-
-  } catch (erro) {
-
-    console.error(erro);
-
-    alert(
-      "Erro ao conectar ao servidor."
-    );
-  }
-}
-
-
-/* =========================
-   LIMPAR FORMULÁRIO
-========================= */
-
-function limparFormulario() {
-
-  document.getElementById(
-    "carga"
-  ).value = "";
-
-  document.getElementById(
-    "valor"
-  ).value = "";
-
-  document.getElementById(
-    "local_coleta"
-  ).value = "";
-
-  document.getElementById(
-    "local_entrega"
-  ).value = "";
-
-  document.getElementById(
-    "placa"
-  ).value = "";
-
-  document.getElementById(
-    "motorista"
-  ).value = "";
-
-  document.getElementById(
-    "data_carga"
-  ).value = "";
-
-  document.getElementById(
-    "observacao"
-  ).value = "";
-
-  document.getElementById(
-    "status"
-  ).value = "Disponível";
-}
-
-
-/* =========================
-   SAIR
-========================= */
-
-function sair() {
-
-  localStorage.removeItem(
-    "adminToken"
+  btnLogin.addEventListener(
+    "click",
+    fazerLogin
   );
 
-  token = null;
+
+  senhaInput.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (event.key === "Enter") {
+        fazerLogin();
+      }
+
+    }
+  );
 
 
-  document.getElementById(
-    "loginArea"
-  ).style.display = "block";
+  // SAIR
+  btnSair.addEventListener(
+    "click",
+    function() {
+
+      localStorage.removeItem("admin_token");
+
+      mostrarLogin();
+
+    }
+  );
 
 
-  document.getElementById(
-    "adminArea"
-  ).style.display = "none";
+  // CRIAR CARGA
+  formCarga.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+      mensagem.innerHTML = "";
+
+      const carga =
+        document.getElementById("carga").value.trim();
+
+      const valor =
+        document.getElementById("valor").value;
+
+      const local_coleta =
+        document.getElementById("local_coleta").value.trim();
+
+      const local_entrega =
+        document.getElementById("local_entrega").value.trim();
+
+      const placa =
+        document.getElementById("placa").value.trim();
+
+      const motorista =
+        document.getElementById("motorista").value.trim();
+
+      const data_carga =
+        document.getElementById("data_carga").value;
+
+      const status =
+        document.getElementById("status").value;
+
+      const observacao =
+        document.getElementById("observacao").value.trim();
 
 
-  document.getElementById(
-    "senha"
-  ).value = "";
-}
+      if (!carga) {
+
+        mensagem.innerHTML =
+          '<div class="erro">Preencha o campo Carga.</div>';
+
+        return;
+      }
+
+      if (!valor) {
+
+        mensagem.innerHTML =
+          '<div class="erro">Preencha o Valor da carga.</div>';
+
+        return;
+      }
+
+      if (!local_coleta) {
+
+        mensagem.innerHTML =
+          '<div class="erro">Preencha o Local onde pegar a carga.</div>';
+
+        return;
+      }
+
+      if (!local_entrega) {
+
+        mensagem.innerHTML =
+          '<div class="erro">Preencha o Local onde entregar.</div>';
+
+        return;
+      }
+
+      if (!placa) {
+
+        mensagem.innerHTML =
+          '<div class="erro">Preencha a Placa do caminhão.</div>';
+
+        return;
+      }
+
+      if (!motorista) {
+
+        mensagem.innerHTML =
+          '<div class="erro">Preencha o Nome do motorista.</div>';
+
+        return;
+      }
 
 
-/* =========================
-   ERROS
-========================= */
+      const token =
+        localStorage.getItem("admin_token");
 
-function mostrarErro(texto) {
+      if (!token) {
 
-  const mensagem =
-    document.getElementById(
-      "mensagem"
-    );
+        mostrarLogin();
 
-  mensagem.className =
-    "mensagem erro";
-
-  mensagem.textContent =
-    texto;
-}
+        return;
+      }
 
 
-function mostrarErroLogin(texto) {
+      try {
 
-  const mensagem =
-    document.getElementById(
-      "loginMensagem"
-    );
+        const resposta = await fetch(
+          "/api/cargas",
+          {
 
-  mensagem.className =
-    "mensagem erro";
+            method: "POST",
 
-  mensagem.textContent =
-    texto;
-}
+            headers: {
+
+              "Content-Type": "application/json",
+
+              "Authorization":
+                "Bearer " + token
+
+            },
+
+            body: JSON.stringify({
+
+              carga: carga,
+
+              valor: Number(valor),
+
+              local_coleta:
+                local_coleta,
+
+              local_entrega:
+                local_entrega,
+
+              placa:
+                placa,
+
+              motorista:
+                motorista,
+
+              data_carga:
+                data_carga || null,
+
+              status:
+                status,
+
+              observacao:
+                observacao
+
+            })
+
+          }
+        );
 
 
-/* =========================
-   SEGURANÇA
-========================= */
+        const dados =
+          await resposta.json();
 
-function escapar(texto) {
 
-  if (
-    texto === null ||
-    texto === undefined
-  ) {
-    return "";
+        if (!resposta.ok) {
+
+          if (
+            resposta.status === 401 ||
+            resposta.status === 403
+          ) {
+
+            localStorage.removeItem(
+              "admin_token"
+            );
+
+            mostrarLogin();
+
+            loginMensagem.innerHTML =
+              '<div class="erro">Sua sessão expirou. Digite a senha novamente.</div>';
+
+            return;
+          }
+
+          mensagem.innerHTML =
+            '<div class="erro">' +
+            (dados.error || "Erro ao criar carga.") +
+            '</div>';
+
+          return;
+        }
+
+
+        mensagem.innerHTML =
+          '<div class="sucesso">Carga criada com sucesso!</div>';
+
+
+        formCarga.reset();
+
+        carregarCargas();
+
+      } catch (erro) {
+
+        console.error(erro);
+
+        mensagem.innerHTML =
+          '<div class="erro">Erro ao conectar ao servidor.</div>';
+
+      }
+
+    }
+  );
+
+
+  // CARREGAR CARGAS
+  async function carregarCargas() {
+
+    try {
+
+      const resposta =
+        await fetch("/api/cargas");
+
+      const cargas =
+        await resposta.json();
+
+
+      if (!Array.isArray(cargas) || cargas.length === 0) {
+
+        listaCargas.innerHTML =
+          "<p>Nenhuma carga cadastrada.</p>";
+
+        return;
+      }
+
+
+      listaCargas.innerHTML =
+        cargas.map(function(carga) {
+
+          return `
+
+            <div class="carga">
+
+              <strong>${escapar(carga.carga)}</strong>
+
+              <p>
+                💰 Valor:
+                R$ ${Number(carga.valor || 0).toFixed(2)}
+              </p>
+
+              <p>
+                📍 Coleta:
+                ${escapar(carga.local_coleta)}
+              </p>
+
+              <p>
+                🏁 Entrega:
+                ${escapar(carga.local_entrega)}
+              </p>
+
+              <p>
+                🚛 Placa:
+                ${escapar(carga.placa)}
+              </p>
+
+              <p>
+                👤 Motorista:
+                ${escapar(carga.motorista)}
+              </p>
+
+              <p>
+                📅 Data:
+                ${carga.data_carga || "Não informada"}
+              </p>
+
+              <p>
+                📌 Status:
+                ${escapar(carga.status)}
+              </p>
+
+              ${
+                carga.observacao
+                ? `<p>📝 ${escapar(carga.observacao)}</p>`
+                : ""
+              }
+
+              <button
+                class="btn-danger"
+                onclick="excluirCarga(${carga.id})"
+              >
+                EXCLUIR CARGA
+              </button>
+
+            </div>
+
+          `;
+
+        }).join("");
+
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      listaCargas.innerHTML =
+        '<div class="erro">Erro ao carregar cargas.</div>';
+
+    }
+
   }
 
 
-  return String(texto)
+  // EXCLUIR
+  async function excluirCarga(id) {
 
-    .replace(
-      /&/g,
-      "&amp;"
-    )
+    if (!confirm("Deseja realmente excluir esta carga?")) {
+      return;
+    }
 
-    .replace(
-      /</g,
-      "&lt;"
-    )
 
-    .replace(
-      />/g,
-      "&gt;"
-    )
+    const token =
+      localStorage.getItem("admin_token");
 
-    .replace(
-      /"/g,
-      "&quot;"
-    )
 
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-}
+    if (!token) {
+
+      mostrarLogin();
+
+      return;
+    }
+
+
+    try {
+
+      const resposta =
+        await fetch(
+          "/api/cargas/" + id,
+          {
+
+            method: "DELETE",
+
+            headers: {
+
+              "Authorization":
+                "Bearer " + token
+
+            }
+
+          }
+        );
+
+
+      const dados =
+        await resposta.json();
+
+
+      if (!resposta.ok) {
+
+        if (
+          resposta.status === 401 ||
+          resposta.status === 403
+        ) {
+
+          localStorage.removeItem(
+            "admin_token"
+          );
+
+          mostrarLogin();
+
+          return;
+        }
+
+        alert(
+          dados.error ||
+          "Erro ao excluir carga."
+        );
+
+        return;
+      }
+
+
+      carregarCargas();
+
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      alert(
+        "Erro ao conectar ao servidor."
+      );
+
+    }
+
+  }
+
+
+  // PROTEÇÃO CONTRA HTML
+  function escapar(valor) {
+
+    if (valor === null || valor === undefined) {
+      return "";
+    }
+
+    return String(valor)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // COMEÇA SEMPRE NA TELA DE LOGIN
+  mostrarLogin();
 
 </script>
 
