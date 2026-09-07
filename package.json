@@ -1,0 +1,15 @@
+{
+  "name": "global-truck-cargas",
+  "version": "1.0.0",
+  "description": "Painel simples de cargas para empresa virtual do Global Truck Simulator",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1"
+  }
+}
